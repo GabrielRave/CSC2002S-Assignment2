@@ -1,4 +1,4 @@
-//package typingTutor;
+package typingTutor;
 
 public class WordDictionary {
 	int size;

@@ -1,6 +1,6 @@
-//package typingTutor;
+package typingTutor;
 
-public class FallingWord {
+public class FallingWord implements Comparable<FallingWord>{
 	private String word; // the word
 	private int x; //position - width
 	private int y; // postion - height
@@ -32,7 +32,14 @@ public class FallingWord {
 		this.x=x; //only need to set x, word is at top of screen at start
 		this.maxY=maxY;
 	}
-	
+   
+   @Override //this method was added and compares falling words based on height
+   public int compareTo(FallingWord fw){
+      Integer x = getY();
+      Integer y = fw.getY();
+      return y.compareTo(x);
+  }
+        
 	public static void increaseSpeed( ) {
 		minWait+=50;
 		maxWait+=50;

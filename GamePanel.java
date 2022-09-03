@@ -1,4 +1,4 @@
-//package typingTutor;
+package typingTutor;
 
 import java.awt.Color;
 import java.awt.Graphics;
