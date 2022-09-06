@@ -1,3 +1,4 @@
+//This class was modified: impliments comparable and has a compareTo method based on height
 package typingTutor;
 
 public class FallingWord implements Comparable<FallingWord>{
@@ -5,8 +6,9 @@ public class FallingWord implements Comparable<FallingWord>{
 	private int x; //position - width
 	private int y; // postion - height
 	private int maxY; //maximum height
+        private int maxX; //added
 	private boolean dropped; //flag for if user does not manage to catch word in time
-	
+	private boolean isHungryWord;
 	private int fallingSpeed; //how fast this word is
 	private static int maxWait=1000;
 	private static int minWait=100;
@@ -27,19 +29,14 @@ public class FallingWord implements Comparable<FallingWord>{
 		this.word=text;
 	}
 	
-	FallingWord(String text,int x, int maxY) { //most commonly used constructor - sets it all.
+	FallingWord(String text, int x, int y, int maxX, int maxY) { //most commonly used constructor - sets it all.
 		this(text);
 		this.x=x; //only need to set x, word is at top of screen at start
 		this.maxY=maxY;
+                this.maxX=maxX;
+                this.y=y;
 	}
-   
-   @Override //this method was added and compares falling words based on height
-   public int compareTo(FallingWord fw){
-      Integer x = getY();
-      Integer y = fw.getY();
-      return y.compareTo(x);
-  }
-        
+	
 	public static void increaseSpeed( ) {
 		minWait+=50;
 		maxWait+=50;
@@ -50,6 +47,14 @@ public class FallingWord implements Comparable<FallingWord>{
 		minWait=100;
 	}
 	
+        @Override //this method was added and compares falling words based on height
+        public int compareTo(FallingWord fw){
+            synchronized(this){
+                Integer x = getY();
+                Integer y = fw.getY();
+                return y.compareTo(x);
+            }
+        }
 
 // all getters and setters must be synchronized
 	public synchronized  void setY(int y) {
@@ -61,8 +66,16 @@ public class FallingWord implements Comparable<FallingWord>{
 	}
 	
 	public synchronized  void setX(int x) {
+		if (x>maxX) {
+			x=maxX;
+			dropped=true; //user did not manage to catch this word
+		}
 		this.x=x;
 	}
+        
+        public synchronized void setSpeed(int speed){
+            this.fallingSpeed=speed;
+        }
 	
 	public synchronized  void setWord(String text) {
 		this.word=text;
@@ -113,9 +126,24 @@ public class FallingWord implements Comparable<FallingWord>{
 	public synchronized  void drop(int inc) {
 		setY(y+inc);
 	}
-	
+        
+        public synchronized  void left(int inc) {
+		setX(x+inc);
+	}
+        
 	public synchronized  boolean dropped() {
 		return dropped;
 	}
+        
+        public void setIsHungryWordTrue(){
+            isHungryWord=true;
+        }
 
+    public synchronized void setDropped(boolean dropped) {
+        this.dropped = dropped;
+    }
+        
+        public boolean getIsHungryWord(){
+            return isHungryWord;
+        }
 }

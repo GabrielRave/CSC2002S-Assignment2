@@ -13,7 +13,7 @@ public class WordMover extends Thread {
 	WordMover( FallingWord word) {
 		myWord = word;
 	}
-	
+        	
 	WordMover( FallingWord word,WordDictionary dict, Score score,
 			CountDownLatch startLatch, AtomicBoolean d, AtomicBoolean p) {
 		this(word);
@@ -22,11 +22,15 @@ public class WordMover extends Thread {
 		this.done=d;
 		this.pause=p;
 	}
+        
+        public FallingWord getMyWord() {
+            return myWord;
+        }
 	
 	
 	
 	public void run() {
-
+            //System.out.println("Word mover thread started");
 		//System.out.println(myWord.getWord() + " falling speed = " + myWord.getSpeed());
 		try {
 			System.out.println(myWord.getWord() + " waiting to start " );
@@ -40,13 +44,13 @@ public class WordMover extends Thread {
 			//animate the word
 			while (!myWord.dropped() && !done.get()) {
 				    myWord.drop(10);
-					try {
-						sleep(myWord.getSpeed());
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					};		
-					while(pause.get()&&!done.get()) {};
+                                try {
+                                        sleep(myWord.getSpeed());
+                                } catch (InterruptedException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                };		
+                                while(pause.get()&&!done.get()) {};
 			}
 			if (!done.get() && myWord.dropped()) {
 				score.missedWord();
