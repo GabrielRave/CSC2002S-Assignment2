@@ -32,8 +32,8 @@ public class GamePanel extends JPanel implements Runnable {
 		    int height = getHeight()-borderWidth*2;
 		    g.clearRect(borderWidth,borderWidth,width,height);//the active space
                     g.setColor(Color.lightGray);
-                    g.fillRect(0,borderWidth,borderWidth,height);
-                    g.fillRect(width+borderWidth,borderWidth,borderWidth,height-borderWidth);
+                    g.fillRect(0,borderWidth,borderWidth,height); //left panel
+                    g.fillRect(width+borderWidth,borderWidth,borderWidth,height-borderWidth);//right panel
 		    g.setColor(Color.pink); //change colour of pen
 		    g.fillRect(0,height,width+borderWidth*2,borderWidth); //draw danger zone
                     
@@ -46,28 +46,28 @@ public class GamePanel extends JPanel implements Runnable {
 		    }
 		    else if (!done.get()) {
 		    	for (int i=0;i<noWords;i++){	    
-                            if (!words[i].getIsHungryWord()){  
+                            if (!words[i].getIsHungryWord()){  //regular falling word
                                 g.setColor(Color.black);
 		    		g.drawString(words[i].getWord(),words[i].getX()+borderWidth,words[i].getY());
                             }
-                            else{
+                            else{ //Hungry word
                                 g.setColor(Color.green);
                                 g.drawString(words[i].getWord(),words[i].getX()+borderWidth,words[i].getY());
                                 g.setColor(Color.lightGray);
-                                g.fillRect(0,borderWidth,borderWidth,height-borderWidth);
-                                g.fillRect(width+borderWidth,borderWidth,borderWidth,height-borderWidth);
+                                g.fillRect(0,borderWidth,borderWidth,height-borderWidth); //left panel -refilled to stop parts of words beiing left onscreen
+                                g.fillRect(width+borderWidth,borderWidth,borderWidth,height-borderWidth); //right panel
                                 int hwLength=words[i].getWord().length()*26;
-                                int hwx=words[i].getX()+hwLength/2; 
-                                int hwy=words[i].getY()+13;
-                                //Add method for checking collisions here
+                                int hwx=words[i].getX()+hwLength/2; //middle x value of hungry word
+                                int hwy=words[i].getY()+13; //middle y value of hungry word
+                                //Code for checking collisions here
                                 for (int j=0;j<noWords;j++){
                                     if (!words[j].getIsHungryWord()){
-                                        int wordLength=words[j].getWord().length()*13;
+                                        int wordLength=words[j].getWord().length()*26; //length of falling word
                                         int compareX=hwx-(words[j].getX()+wordLength/2);//comparing middle of 2 words
                                         int compareY=hwy-(words[j].getY()+13);//comparing middle of two words
-                                        if(compareX<0) compareX=-compareX;
-                                        if(compareY<0) compareY=-compareY;
-                                        if(compareY<26&&compareX<wordLength/2+hwLength/2){
+                                        if(compareX<0) compareX=-compareX; //find absolute value
+                                        if(compareY<0) compareY=-compareY; //find absolute value
+                                        if(compareY<26&&compareX<wordLength/2+hwLength/2){ //checks if words are touching
                                             words[j].setSpeed(0);
                                             words[j].setDropped(true);
                                         }
@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
                             }
 		    	}
                         g.setColor(Color.lightGray); //change colour of pen
-		    	g.fillRect(borderWidth,0,width+borderWidth,borderWidth);
+		    	g.fillRect(borderWidth,0,width+borderWidth,borderWidth); //fillinf in top panel
 		   }
 		   else { if (won.get()) {
 			   g.setFont(new Font("Arial", Font.BOLD, 36));

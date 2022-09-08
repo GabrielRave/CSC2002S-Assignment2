@@ -1,5 +1,5 @@
-package typingTutor;
-
+package typingTutor; 
+//class added for implimenting hungryWOrd
 import static java.lang.Thread.sleep;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,14 +31,8 @@ public class HungryWordMover extends WordMover {
         public FallingWord getMyWord() {
             return myWord;
         }   
-        
-        public void HungryWordScore(int score1){
-            score.HungryWordScore(score1);
-        }
 	
 	public void run() {
-            //System.out.println("Word mover thread started");
-		//System.out.println(myWord.getWord() + " falling speed = " + myWord.getSpeed());
 		try {
 			System.out.println(myWord.getWord() + " waiting to start " );
 			startLatch.await();
@@ -49,7 +43,6 @@ public class HungryWordMover extends WordMover {
 		System.out.println(myWord.getWord() + " started" );
 		while (!done.get()) {				
 			//animate the word
-                        //System.out.println(myWord.getWord());
 			while (!myWord.dropped() && !done.get()) {
 				    myWord.left(10);
                                 try {

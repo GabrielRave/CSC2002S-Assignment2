@@ -28,9 +28,7 @@ public class TypingTutorApp{
 	static WordDictionary dict = new WordDictionary(); //use default dictionary, to read from file eventually
 
 	static FallingWord[] words;
-        //static FallingWord fw = new FallingWord("Hungry af1",111,101);;
 	static WordMover[] wrdShft;
-        //static HungryWordMover hwm;
 	static CountDownLatch startLatch; //so threads can start at once
 	
 	static AtomicBoolean started;  
@@ -199,7 +197,7 @@ public class TypingTutorApp{
 		for (int i=0;i<noWords;i++) {
 			if (i<noWords-1)
                             words[i]=new FallingWord(dict.getNewWord(),gameWindow.getValidXpos(),0,xLimit,yLimit);
-                        else{
+                        else{//makes last word in array a falling word with isHungryWord set to true
                             String hungryWord1=dict.getNewWord();
                             words[i]=new FallingWord(hungryWord1,0-hungryWord1.length()*26+25,gameWindow.getValidYpos(),xLimit,yLimit); //x value moved left by length of word then right by borderwidth font is size 26
                             words[i].setIsHungryWordTrue();
@@ -211,7 +209,7 @@ public class TypingTutorApp{
                     if (i<noWords-1)
 	    		wrdShft[i] = new WordMover(words[i],dict,score,startLatch,done,pause);
                     else
-                        wrdShft[i] = new HungryWordMover(words[i],dict,score,startLatch,done,pause);
+                        wrdShft[i] = new HungryWordMover(words[i],dict,score,startLatch,done,pause); //last word in array set to hungry word
                 }               
                 //word movers waiting on starting line
                 for (int i=0;i<noWords;i++) {

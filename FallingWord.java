@@ -8,7 +8,7 @@ public class FallingWord implements Comparable<FallingWord>{
 	private int maxY; //maximum height
         private int maxX; //added
 	private boolean dropped; //flag for if user does not manage to catch word in time
-	private boolean isHungryWord;
+	private boolean isHungryWord; //used to destinguish if falling word is hungryWord or regular
 	private int fallingSpeed; //how fast this word is
 	private static int maxWait=1000;
 	private static int minWait=100;
@@ -29,12 +29,12 @@ public class FallingWord implements Comparable<FallingWord>{
 		this.word=text;
 	}
 	
-	FallingWord(String text, int x, int y, int maxX, int maxY) { //most commonly used constructor - sets it all.
+	FallingWord(String text, int x, int y, int maxX, int maxY) { //most commonly used constructor - sets it all. changed to have more informaation set
 		this(text);
 		this.x=x; //only need to set x, word is at top of screen at start
 		this.maxY=maxY;
-                this.maxX=maxX;
-                this.y=y;
+                this.maxX=maxX; //added
+                this.y=y; //added
 	}
 	
 	public static void increaseSpeed( ) {
@@ -127,7 +127,7 @@ public class FallingWord implements Comparable<FallingWord>{
 		setY(y+inc);
 	}
         
-        public synchronized  void left(int inc) {
+        public synchronized  void left(int inc) { //method added for hungryWord
 		setX(x+inc);
 	}
         
@@ -143,7 +143,7 @@ public class FallingWord implements Comparable<FallingWord>{
         this.dropped = dropped;
     }
         
-        public boolean getIsHungryWord(){
+        public boolean getIsHungryWord(){ //method added
             return isHungryWord;
         }
 }
